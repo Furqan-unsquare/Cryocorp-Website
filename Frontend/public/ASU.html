@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ASU Plant Efficiency Quiz</title>
+  <style>
+    :root {
+      --primary: #1a5276; --secondary: #2e86c1; --accent: #3498db;
+      --light-bg: #f8f9fa; --dark-text: #333; --light-text: #fff;
+      --success: #27ae60; --warning: #f39c12; --amber: #ff8c00; --danger: #e74c3c;
+    }
+    
+    * { box-sizing: border-box; }
+    body { font-family: 'Segoe UI', sans-serif; line-height: 1.6; color: var(--dark-text); background: var(--light-bg); margin: 0; }
+    .container { max-width: 800px; margin: 0 auto; padding: 20px; }
+    
+    header { background: var(--primary); color: var(--light-text); padding: 20px 0; text-align: center; }
+    h1 { margin: 0; font-size: 2.2rem; }
+    h2 { color: var(--primary); margin-top: 30px; }
+    
+    .card { background: white; border-radius: 8px; padding: 20px; margin: 20px 0; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+    .intro { display: block; }
+    .question { display: none; }
+    .question.active, .intro.active { display: block; }
+    
+    .benefits { background: var(--primary); color: var(--light-text); }
+    .benefits h3 { color: var(--light-text); margin-top: 0; }
+    
+    .option { display: block; padding: 12px 15px; margin: 10px 0; background: var(--light-bg); border: 1px solid #ddd; border-radius: 5px; cursor: pointer; transition: all 0.3s; }
+    .option:hover { background: #e9ecef; }
+    .option.selected { background: var(--accent); color: white; border-color: var(--accent); }
+    
+    .nav { display: flex; justify-content: space-between; margin-top: 20px; }
+    button { padding: 10px 20px; background: var(--secondary); color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; transition: background 0.3s; }
+    button:hover { background: var(--primary); }
+    button:disabled { background: #ccc; cursor: not-allowed; }
+    
+    .start-btn { display: block; width: 200px; margin: 20px auto; padding: 15px; font-size: 18px; font-weight: bold; }
+    
+    #results { display: none; text-align: center; }
+    .score-container { text-align: center; margin-bottom: 30px; padding: 20px; border: 1px solid #eee; border-radius: 8px; background-color: #fcfcfc; }
+    .score { font-size: 3rem; font-weight: bold; color: var(--primary); text-shadow: 1px 1px 2px rgba(0,0,0,0.1); }
+    
+    .alert { border-radius: 10px; padding: 25px; margin: 25px 0; position: relative; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+    .alert::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; }
+    
+    .alert-red { background: linear-gradient(135deg, #ffe6e6, #ffcccc); border: 2px solid var(--danger); color: #8b0000; }
+    .alert-red::before { background: var(--danger); }
+    .alert-amber { background: linear-gradient(135deg, #fff3e0, #ffe0b3); border: 2px solid var(--amber); color: #cc5500; }
+    .alert-amber::before { background: var(--amber); }
+    .alert-yellow { background: linear-gradient(135deg, #fff8e1, #ffecb3); border: 2px solid var(--warning); color: #cc7a00; }
+    .alert-yellow::before { background: var(--warning); }
+    .alert-green { background: linear-gradient(135deg, #e8f5e8, #c8e6c9); border: 2px solid var(--success); color: #1b5e20; }
+    .alert-green::before { background: var(--success); }
+    
+    .alert-icon { font-size: 3rem; margin-bottom: 15px; }
+    .loss-highlight { background: rgba(255,255,255,0.9); border-radius: 8px; padding: 20px; margin: 20px 0; border-left: 5px solid #ff6b6b; }
+    .loss-amount { font-size: 2rem; font-weight: bold; color: #d63031; text-align: center; margin: 15px 0; }
+    
+    .cta-section { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border-radius: 12px; padding: 30px; margin: 30px 0; text-align: center; }
+    .cta-button { background: #ff6b6b; color: white; padding: 15px 40px; font-size: 1.2rem; font-weight: bold; border: none; border-radius: 50px; cursor: pointer; margin: 15px 10px; transition: all 0.3s; box-shadow: 0 4px 15px rgba(255,107,107,0.3); }
+    .cta-button:hover { background: #e55656; transform: translateY(-2px); box-shadow: 0 6px 20px rgba(255,107,107,0.4); }
+    
+    .urgency-text { font-weight: bold; font-size: 1.1rem; animation: pulse 2s infinite; }
+    @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.7; } }
+    
+    .progress-container { width: 100%; background: #e9ecef; border-radius: 10px; margin: 20px 0; }
+    .progress-bar { height: 10px; background: var(--accent); border-radius: 10px; width: 0%; transition: width 0.3s; }
+    
+    footer { text-align: center; margin-top: 40px; padding: 20px; background: var(--primary); color: var(--light-text); }
+    
+    @media (max-width: 768px) {
+      .container { padding: 10px; }
+      h1 { font-size: 1.8rem; }
+      .cta-button { display: block; margin: 10px 0; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <h1>Air Separation Unit (ASU) Plant Efficiency Quiz</h1>
+      <p>Maximize Output, Minimize Costs, and Optimize Performance</p>
+    </div>
+  </header>
+
+  <div class="container">
+    <div class="card intro" id="intro">
+      <h2>Optimize Performance, Lower Expenses, and Gain Independence with Your ASU Plant</h2>
+      <p>Take the first step by evaluating your ASU plant's efficiency through our assessment quiz.</p>
+      <p>Discover the untapped potential and efficiency gains of your existing Air Separation Unit with our ASU Performance Evaluation Quiz. This assessment helps you identify areas for improvement in your current operations and reveals the significant financial and operational benefits of enhanced ASU management.</p>
+      
+      <div class="card benefits">
+        <h3>Why take the assessment?</h3>
+        <p>Managing an Air Separation Unit effectively requires precise monitoring and continuous improvement. Your ASU is a critical asset in your gas production process, and even small efficiency improvements can translate to substantial savings. By thoroughly understanding your system's performance metrics, you can:</p>
+        <ul>
+          <li>Reduce energy consumption significantly</li>
+          <li>Minimize maintenance costs and downtime</li>
+          <li>Maximize production capacity and gas purity</li>
+          <li>Increase operational efficiency while maintaining control</li>
+        </ul>
+      </div>
+      
+      <p><strong>Instructions:</strong> Answer each question honestly about your Air Separation Unit plant. Each question is worth 12.5 points for a total of 100 possible points. At the end, you'll receive recommendations based on your score.</p>
+      
+      <button class="start-btn" onclick="startQuiz()">Start Assessment</button>
+    </div>
+    
+    <div class="progress-container">
+      <div class="progress-bar" id="progress-bar"></div>
+    </div>
+    
+    <div id="quiz-container"></div>
+    
+    <div id="results" class="card">
+      <div class="score-container">
+        <p>Your ASU Efficiency Score:</p>
+        <div class="score" id="final-score">0</div>
+        <p>out of 100 points</p>
+      </div>
+      
+      <div id="excellent" class="alert alert-green" style="display:none;">
+        <div class="alert-icon">🏆</div>
+        <h3>Excellent Performance</h3>
+        <p><strong>Your plant is performing exceptionally well!</strong> However, even top performers can benefit from advanced optimization strategies.</p>
+        
+        <div class="loss-highlight">
+          <p><strong>💡 Opportunity Cost:</strong> Without continuous optimization, you could be leaving money on the table.</p>
+          <div class="loss-amount">$5,000 - $150,000</div>
+          <p style="text-align: center; margin: 0;"><em>Annual optimization potential still available</em></p>
+        </div>
+        
+        <div class="card">
+          <h4>🎯 Advanced Optimization Opportunities:</h4>
+          <ul>
+            <li>AI-powered predictive maintenance systems</li>
+            <li>Advanced heat integration technologies</li>
+            <li>Peak efficiency parameter optimization</li>
+            <li>Renewable energy integration strategies</li>
+          </ul>
+        </div>
+      </div>
+      
+      <div id="good" class="alert alert-yellow" style="display:none;">
+        <div class="alert-icon">👍</div>
+        <h3>Good Performance</h3>
+        <p><strong>Your plant has solid performance but significant improvement potential!</strong> You're in a great position to maximize your investment.</p>
+        
+        <div class="loss-highlight">
+          <p><strong>💸 Current Annual Losses:</strong> Your plant is losing money due to suboptimal efficiency.</p>
+          <div class="loss-amount">$15,000 - $375,000</div>
+          <p style="text-align: center; margin: 0;"><em>Every day of delay increases your losses</em></p>
+        </div>
+        
+        <div class="card">
+          <h4>🎯 Immediate Improvement Areas:</h4>
+          <ul>
+            <li>Regular maintenance scheduling and optimization</li>
+            <li>Power consumption monitoring and control</li>
+            <li>Equipment efficiency upgrades</li>
+            <li>Process parameter optimization</li>
+          </ul>
+        </div>
+      </div>
+      
+      <div id="average" class="alert alert-amber" style="display:none;">
+        <div class="alert-icon">⚠️</div>
+        <h3>Average Performance</h3>
+        <p><strong>URGENT: Your plant needs immediate attention!</strong> You're hemorrhaging money and compromising equipment lifespan.</p>
+        
+        <div class="loss-highlight">
+          <p><strong>🔥 Critical Annual Losses:</strong> Your inefficiencies are costing you dearly!</p>
+          <div class="loss-amount">$30,000 - $750,000</div>
+          <p style="text-align: center; margin: 0; color: #d63031;"><em><strong>EVERY MONTH OF DELAY = MORE LOSSES</strong></em></p>
+        </div>
+        
+        <div class="card">
+          <h4>🚨 Critical Action Items:</h4>
+          <ul>
+            <li>Immediate equipment maintenance and inspection</li>
+            <li>Energy efficiency audit and improvements</li>
+            <li>Staff training on best practices</li>
+            <li>Process control system upgrades</li>
+            <li>Regular performance monitoring implementation</li>
+          </ul>
+        </div>
+      </div>
+      
+      <div id="low" class="alert alert-red" style="display:none;">
+        <div class="alert-icon">🚨</div>
+        <h3>Critical Performance</h3>
+        <p><strong>EMERGENCY SITUATION: Your plant is in crisis mode!</strong> Immediate intervention required to prevent catastrophic losses.</p>
+        
+        <div class="loss-highlight">
+          <p><strong>💥 CATASTROPHIC ANNUAL LOSSES:</strong></p>
+          <div class="loss-amount">$60,000 - $1,500,000</div>
+          <p style="text-align: center; margin: 0; color: #d63031;"><em><strong>CRISIS LEVEL - ACT IMMEDIATELY!</strong></em></p>
+        </div>
+        
+        <div class="card">
+          <h4>🚨 EMERGENCY Actions Required:</h4>
+          <ul>
+            <li>Complete plant shutdown and inspection</li>
+            <li>Professional energy audit immediately</li>
+            <li>Equipment replacement planning</li>
+            <li>Staff retraining program</li>
+            <li>Implementation of strict monitoring protocols</li>
+            <li>Consider complete system overhaul</li>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="card" style="text-align: center; background: linear-gradient(to right, #e0f7fa, #bbdefb); border: 2px solid var(--accent); box-shadow: 0 8px 20px rgba(0,0,0,0.15);">
+        <h3>🔗 Ready to Take Action?</h3>
+        <p>Don't let another day pass losing money. Our ASU optimization experts are ready to help you:</p>
+        <ul style="text-align: left; max-width: 500px; margin: 0 auto;">
+          <li>Conduct immediate efficiency assessment</li>
+          <li>Develop custom optimization roadmap</li>
+          <li>Implement proven cost-saving strategies</li>
+          <li>Provide ongoing monitoring and support</li>
+        </ul>
+        <p><strong>📞 Call us today: 91-9821219939 &nbsp;&nbsp;&nbsp; 📧 Email: admin@cryocorp.co.in </strong></p>
+        <p><em>Free initial consultation for quiz participants!</em></p>
+      </div>
+      
+      <button class="start-btn" onclick="restartQuiz()">Retake Quiz</button>
+    </div>
+  </div>
+  
+  <footer>
+    <div class="container">
+      <p>© 2025 ASU Efficiency Assessment Tool. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script>
+    const questions = [
+      {
+      q: "How often do you conduct preventive maintenance on your ASU?",
+        options: [
+          { text: "Every 1-3 months with detailed maintenance logs", points: 12.5 },
+          { text: "Every 4-6 months with basic logging", points: 9 },
+          { text: "Once a year or when issues arise", points: 5 },
+          { text: "Only when equipment fails", points: 0 }
+        ]
+      },
+      {
+        q: "What is your plant's power consumption per unit of gas produced?",
+        options: [
+          { text: "Below industry average (optimized efficiency)", points: 12.5 },
+          { text: "At industry average", points: 9 },
+          { text: "10-20% above industry average", points: 4 },
+          { text: "More than 20% above industry average", points: 0 }
+        ]
+      },
+      {
+        q: "How often is your air compressor system maintained?",
+        options: [
+          { text: "Strict schedule per manufacturer recommendations with detailed records", points: 12.5 },
+          { text: "Regularly but not strictly following schedule", points: 7.5 },
+          { text: "Only when problems occur", points: 2.5 },
+          { text: "Rarely checked or maintained", points: 0 }
+        ]
+      },
+      {
+        q: "What percentage of your plant capacity do you typically operate at?",
+        options: [
+          { text: "80-95% (optimal efficiency range)", points: 12.5 },
+          { text: "60-80% (good utilization)", points: 9 },
+          { text: "Below 60% (underutilized)", points: 4 },
+          { text: "Frequently cycling between very high and very low", points: 1 }
+        ]
+      },
+      {
+        q: "How advanced is your instrumentation and control system?",
+        options: [
+          { text: "Modern automated control systems with remote monitoring and data analytics", points: 12.5 },
+          { text: "Reliable control systems with some automation", points: 9 },
+          { text: "Basic manual controls with minimal automation", points: 4 },
+          { text: "Outdated controls requiring frequent manual adjustment", points: 0 }
+        ]
+      },
+      {
+        q: "How do you measure and track your plant's efficiency?",
+        options: [
+          { text: "Comprehensive digital monitoring with regular analysis of all key parameters", points: 12.5 },
+          { text: "Regular monitoring of key production and efficiency parameters", points: 9 },
+          { text: "Basic monitoring of production output only", points: 4 },
+          { text: "No formal monitoring or tracking system", points: 0 }
+        ]
+      },
+      {
+        q: "What is your plant's product purity level compared to specifications?",
+        options: [
+          { text: "Consistently exceeds required purity levels with minimal variation", points: 12.5 },
+          { text: "Meets required purity levels consistently", points: 9 },
+          { text: "Occasionally falls below required purity specifications", points: 4 },
+          { text: "Frequently struggles with purity issues", points: 0 }
+        ]
+      },
+      {
+        q: "What is the age and condition of your main ASU equipment?",
+        options: [
+          { text: "Less than 5 years old with modern technology", points: 12.5 },
+          { text: "5-10 years old, well-maintained", points: 9 },
+          { text: "10-20 years old, showing signs of wear", points: 5 },
+          { text: "More than 20 years old with frequent issues", points: 1 }
+        ]
+      }
+    ];
+
+    let currentQ = 0, score = 0, answers = [];
+
+    function startQuiz() {
+      document.getElementById('intro').style.display = 'none';
+      renderQuestions();
+      showQuestion(0);
+      updateProgress(1);
+    }
+
+    function renderQuestions() {
+      const container = document.getElementById('quiz-container');
+      container.innerHTML = questions.map((q, i) => `
+        <div class="card question" id="q${i}">
+          <h3>${i + 1}. ${q.q}</h3>
+          <div class="options">
+            ${q.options.map((opt, j) => `
+              <div class="option" onclick="selectOption(${i}, ${j}, ${opt.points})">${String.fromCharCode(65 + j)}) ${opt.text}</div>
+            `).join('')}
+          </div>
+          <div class="nav">
+            ${i > 0 ? `<button onclick="showQuestion(${i - 1})">Previous</button>` : '<div></div>'}
+            ${i < questions.length - 1 ? 
+              `<button id="next${i}" onclick="showQuestion(${i + 1})" disabled>Next Question</button>` : 
+              `<button id="submit" onclick="submitQuiz()" disabled>Submit Quiz</button>`
+            }
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function showQuestion(n) {
+      document.querySelectorAll('.question').forEach(q => q.style.display = 'none');
+      document.getElementById(`q${n}`).style.display = 'block';
+      currentQ = n;
+      updateProgress(n + 1);
+    }
+
+    function selectOption(qIndex, optIndex, points) {
+      const options = document.querySelectorAll(`#q${qIndex} .option`);
+      options.forEach(opt => opt.classList.remove('selected'));
+      options[optIndex].classList.add('selected');
+      
+      answers[qIndex] = points;
+      
+      const btn = qIndex < questions.length - 1 ? 
+        document.getElementById(`next${qIndex}`) : 
+        document.getElementById('submit');
+      btn.disabled = false;
+    }
+
+    function submitQuiz() {
+      score = answers.reduce((sum, pts) => sum + (pts || 0), 0);
+      document.getElementById('final-score').textContent = Math.round(score);
+      
+      // Hide all alerts first
+      document.querySelectorAll('.alert').forEach(alert => alert.style.display = 'none');
+      
+      // Show appropriate alert based on new color scheme
+      if (score >= 80) document.getElementById('excellent').style.display = 'block';
+      else if (score >= 60) document.getElementById('good').style.display = 'block';
+      else if (score >= 40) document.getElementById('average').style.display = 'block';
+      else document.getElementById('low').style.display = 'block';
+      
+      document.getElementById('quiz-container').style.display = 'none';
+      document.getElementById('results').style.display = 'block';
+      updateProgress(questions.length + 1);
+    }
+
+    function restartQuiz() {
+      // Reload the entire page instead of just resetting variables
+      window.location.reload();
+    }
+
+    function updateProgress(step) {
+      const progress = (step / (questions.length + 1)) * 100;
+      document.getElementById('progress-bar').style.width = `${progress}%`;
+    }
+
+    function handleCTA(btn) {
+      const text = btn.textContent;
+      if (text.includes('EMERGENCY') || text.includes('NOW')) {
+        alert('Emergency consultation request submitted! We will call you within 1 hour.');
+      } else if (text.includes('Schedule') || text.includes('Consultation')) {
+        alert('Consultation scheduled! We will contact you within 24 hours to discuss your ASU optimization needs.');
+      } else if (text.includes('Calculate')) {
+        alert('Savings calculation request submitted! Our team will prepare a detailed ROI analysis for your plant.');
+      } else {
+        alert('Request submitted! Our ASU optimization experts will contact you soon.');
+      }
+    }
+  </script>
+</body>
+</html>

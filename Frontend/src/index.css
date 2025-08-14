@@ -1,0 +1,724 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
+All colors MUST be HSL.
+*/
+
+/* Global scrollbar hide for WebKit (Chrome, Safari, Edge) */
+::-webkit-scrollbar {
+  display: none;
+}
+
+/* For Firefox */
+html, body {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
+  scroll-behavior: smooth;
+}
+
+@keyframes bounce-x {
+
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+
+  50% {
+    transform: translateX(60px);
+  }
+}
+
+@keyframes bounce-y {
+
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-60px);
+  }
+}
+
+@keyframes bounce-diagonal {
+
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+
+  50% {
+    transform: translate(80px, -60px);
+  }
+}
+
+@keyframes rectanglePath {
+  0% {
+    transform: translate(0, 0);
+  }
+
+  10% {
+    transform: translate(0, 0);
+  }
+
+  25% {
+    transform: translate(40vw, 0);
+  }
+
+  35% {
+    transform: translate(40vw, 0);
+  }
+
+  50% {
+    transform: translate(40vw, 40vh);
+  }
+
+  60% {
+    transform: translate(40vw, 40vh);
+  }
+
+  75% {
+    transform: translate(0, 40vh);
+  }
+
+  85% {
+    transform: translate(0, 40vh);
+  }
+
+  100% {
+    transform: translate(0, 0);
+  }
+}
+
+@keyframes singleImagePath {
+  0% {
+    transform: translate(0, 10vh) scale(0);
+
+  }
+
+  10% {
+    transform: translate(-10vw, 40vh) scale(0);
+
+  }
+
+  25% {
+    transform: translate(-10vw, 40vh) scale(1);
+
+  }
+
+  35% {
+    transform: translate(-10vw, -10vh) scale(1);
+
+  }
+
+  50% {
+    transform: translate(-10vw, -10vh) scale(1);
+
+  }
+
+  60% {
+    transform: translate(-10vw, 0vh) scale(1.5);
+
+  }
+
+  75% {
+    transform: translate(5vw, -5vh) scale(2.5);
+
+  }
+
+  85% {
+    transform: translate(-10vw, 10vh) scale(1);
+
+  }
+
+  100% {
+    transform: translate(-10vw, -10vh) scale(0);
+
+  }
+}
+
+@keyframes secondImagePath {
+  0% {
+    transform: translate(10vw, 0vh) scale(0);
+
+  }
+
+  10% {
+    transform: translate(10vw, 10vh) scale(0);
+
+  }
+
+  25% {
+    transform: translate(10vw, 20vh) scale(2);
+
+  }
+
+  35% {
+    transform: translate(10vw, 20vh) scale(2);
+
+  }
+
+  50% {
+    transform: translate(0vw, 20vh) scale(2);
+
+  }
+
+  60% {
+    transform: translate(-10vw, 20vh) scale(2);
+
+  }
+
+  75% {
+    transform: translate(-20vw, 15vh) scale(1);
+
+  }
+
+  85% {
+    transform: translate(-30vw, 10vh) scale(0.5);
+
+  }
+
+  100% {
+    transform: translate(-30vw, 10vh) scale(0);
+
+  }
+}
+
+@keyframes thirdImagePath {
+  0% {
+    transform: translate(30vw, 40vh) scale(0);
+
+  }
+
+  10% {
+    transform: translate(10vw, 25vh) scale(0);
+
+  }
+
+  25% {
+    transform: translate(35vw, 25vh) scale(3);
+
+  }
+
+  35% {
+    transform: translate(35vw, 55vh) scale(1.5);
+
+  }
+
+  50% {
+    transform: translate(10vw, 55vh) scale(1);
+
+  }
+
+  60% {
+    transform: translate(10vw, 45vh) scale(1);
+    opacity: 1;
+  }
+
+  75% {
+    transform: translate(10vw, 45vh) scale(0.5);
+    opacity: 0;
+  }
+
+  85% {
+    transform: translate(10vw, 50vh) scale(0);
+    opacity: 0;
+  }
+
+  100% {
+    transform: translate(30vw, 50vh) scale(0);
+    opacity: 0;
+  }
+}
+
+@keyframes fourthImagePath {
+  0% {
+    transform: translate(30vw, 0vh) scale(2);
+    opacity: 0;
+
+  }
+
+  20% {
+
+    transform: translate(30vw, 0vh) scale(2);
+    opacity: 1;
+
+  }
+
+  25% {
+    transform: translate(50vw, -10vh) scale(1);
+    opacity: 1;
+  }
+
+  35% {
+    transform: translate(50vw, -10vh) scale(1);
+
+  }
+
+  50% {
+    transform: translate(50vw, 10vh) scale(1);
+
+  }
+
+  60% {
+    transform: translate(50vw, 20vh) scale(1);
+
+  }
+
+  75% {
+    transform: translate(30vw, 0vh) scale(2);
+
+  }
+
+  85% {
+    transform: translate(30vw, 0vh) scale(2);
+    opacity: 1;
+  }
+
+  90% {
+    transform: translate(30vw, -15vh) scale(2);
+    opacity: 0;
+
+  }
+
+  100% {
+    transform: translate(30vw, -20vh) scale(0);
+    opacity: 0;
+
+  }
+}
+
+@keyframes fifthImagePath {
+  0% {
+    transform: translate(0vw, 0vh) scale(0);
+
+  }
+
+  10% {
+    transform: translate(0vw, 0vh) scale(0);
+
+  }
+
+  25% {
+    transform: translate(0vw, -10vh) scale(2);
+
+  }
+
+  35% {
+    transform: translate(0vw, -10vh) scale(2);
+
+  }
+
+  50% {
+    transform: translate(0vw, -40vh) scale(2.5);
+
+  }
+
+  60% {
+    transform: translate(5vw, -45vh) scale(1);
+
+  }
+
+  75% {
+    transform: translate(10vw, -45vh) scale(0.5);
+
+  }
+
+  85% {
+    transform: translate(10vw, -45vh) scale(0.5);
+    opacity: 1;
+  }
+
+  90% {
+    transform: translate(10vw, -15vh) scale(0);
+    opacity: 0;
+
+  }
+
+  100% {
+    transform: translate(10vw, -20vh) scale(0);
+    opacity: 0;
+
+  }
+}
+
+@keyframes sixthImagePath {
+  0% {
+    transform: translate(0vw, 0vh) scale(0);
+
+  }
+
+  10% {
+    transform: translate(0vw, 0vh) scale(2);
+
+  }
+
+  25% {
+    transform: translate(-10vw, 40vh) scale(1);
+
+  }
+
+  35% {
+    transform: translate(-10vw, -10vh) scale(1);
+
+  }
+
+  50% {
+    transform: translate(-10vw, -40vh) scale(1);
+
+  }
+
+  60% {
+    transform: translate(-10vw, -40vh) scale(1);
+
+  }
+
+  75% {
+    transform: translate(-15vw, -40vh) scale(2);
+
+  }
+
+  85% {
+    transform: translate(-15vw, -40vh) scale(2);
+    opacity: 1;
+  }
+
+  90% {
+    transform: translate(-30vw, -40vh) scale(2);
+    opacity: 0;
+
+  }
+
+  100% {
+    transform: translate(-30vw, -40vh) scale(1);
+    opacity: 0;
+
+  }
+}
+
+@keyframes seventhImagePath {
+  0% {
+    transform: translate(0vw, 0vh) scale(0);
+
+  }
+
+  10% {
+    transform: translate(0vw, 0vh) scale(1);
+
+  }
+
+  25% {
+    transform: translate(0vw, 40vh) scale(2);
+
+  }
+
+  35% {
+    transform: translate(0vw, 40vh) scale(1);
+
+  }
+
+  50% {
+    transform: translate(0vw,0vh) scale(1);
+
+  }
+
+  60% {
+    transform: translate(-10vw, -40vh) scale(1);
+
+  }
+
+  75% {
+    transform: translate(-15vw, -40vh) scale(3.5);
+
+  }
+
+  85% {
+    transform: translate(-15vw, -40vh) scale(3.5);
+    opacity: 1;
+  }
+
+  90% {
+    transform: translate(-30vw, -40vh) scale(3);
+    opacity: 0;
+
+  }
+
+  100% {
+    transform: translate(-30vw, -40vh) scale(2);
+    opacity: 0;
+
+  }
+}
+
+.animate-seventh-image {
+  position: absolute;
+  top: 5vh;
+  left: 30vw;
+  animation: seventhImagePath 6s linear infinite;
+  transform-origin: center;
+}
+
+.animate-sixth-image {
+  position: absolute;
+  top: 125vh;
+  right: 10vw;
+  animation: sixthImagePath 6s linear infinite;
+  transform-origin: center;
+}
+
+.animate-fifth-image {
+  position: absolute;
+  top: 130vh;
+  left: 10vw;
+  animation: fifthImagePath 6s linear infinite;
+  transform-origin: center;
+}
+
+.animate-fourth-image {
+  position: absolute;
+  top: 99vh;
+  left: -25vw;
+  animation: fourthImagePath 6s linear infinite;
+  transform-origin: center;
+}
+
+.animate-third-image {
+  position: absolute;
+  top: 45vh;
+  left: 25vw;
+  animation: thirdImagePath 6s linear infinite;
+  transform-origin: center;
+}
+
+.animate-second-image {
+  position: absolute;
+  top: -10vh;
+  right: 25vw;
+  animation: secondImagePath 6s linear infinite;
+  transform-origin: center;
+}
+
+.animate-single-image {
+  position: absolute;
+  top: 35vh;
+  left: 15vw;
+  animation: singleImagePath 6s linear infinite;
+  transform-origin: center;
+}
+
+.animate-why-path {
+  position: absolute;
+  top: 35vh;
+  left: 15vw;
+  animation: rectanglePath 6s linear infinite;
+  transform-origin: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.animate-cryocorp-path {
+  position: absolute;
+  top: 35vh;
+  left: 15vw;
+  animation: rectanglePath 6s linear infinite;
+  animation-delay: -3s;
+  transform-origin: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+
+    --primary: 158 75% 45%;
+    --primary-foreground: 0 0% 98%;
+
+    --secondary: 170 85% 35%;
+    --secondary-foreground: 0 0% 98%;
+
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+
+    --accent: 158 65% 55%;
+    --accent-foreground: 0 0% 98%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    /* --border: 214.3 31.8% 91.4%; */
+    --input: 214.3 31.8% 91.4%;
+    --ring: 158 75% 45%;
+
+    --radius: 0.5rem;
+
+    /* Custom gradient colors for animations */
+    --gradient-green-1: 158 75% 45%;
+    --gradient-green-2: 170 85% 35%;
+    --gradient-green-3: 150 70% 50%;
+    --gradient-cyan: 180 80% 40%;
+
+    /* Animated gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(var(--gradient-green-1)), hsl(var(--gradient-green-2)), hsl(var(--gradient-cyan)));
+    --gradient-secondary: linear-gradient(225deg, hsl(var(--gradient-green-2)), hsl(var(--gradient-green-3)), hsl(var(--gradient-green-1)));
+
+    /* Animations */
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+    --sidebar-background: 0 0% 98%;
+
+    --sidebar-foreground: 240 5.3% 26.1%;
+
+    --sidebar-primary: 240 5.9% 10%;
+
+    --sidebar-primary-foreground: 0 0% 98%;
+
+    --sidebar-accent: 240 4.8% 95.9%;
+
+    --sidebar-accent-foreground: 240 5.9% 10%;
+
+    /* --sidebar-border: 220 13% 91%; */
+
+    --sidebar-ring: 217.2 91.2% 59.8%;
+
+    --benefit-01: 222.2 47.4% 11.2%;
+    --benefit-02: 180 100% 50%;
+    --benefit-03: 142 76% 36%;
+    --benefit-04: 222.2 47.4% 11.2%;
+
+
+  }
+
+  .flip-card {
+    perspective: 1000px;
+  }
+
+  .flip-card-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    transition: transform 0.8s;
+    transform-style: preserve-3d;
+  }
+
+  .flip-card:hover .flip-card-inner {
+    transform: rotateY(180deg);
+  }
+
+  .flip-card-front,
+  .flip-card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    /* border-radius: 0.5rem; */
+  }
+
+  .flip-card-back {
+    transform: rotateY(180deg);
+  }
+
+  .dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+
+    --primary: 210 40% 98%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 212.7 26.8% 83.9%;
+    --sidebar-background: 240 5.9% 10%;
+    --sidebar-foreground: 240 4.8% 95.9%;
+    --sidebar-primary: 224.3 76.3% 48%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 3.7% 15.9%;
+    --sidebar-accent-foreground: 240 4.8% 95.9%;
+    --sidebar-border: 240 3.7% 15.9%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+}
+
+@layer base {
+  * {
+    box-shadow: none !important;
+    text-shadow: none !important;
+    filter: none !important;
+    /* removes drop-shadow */
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+@media (max-width: 767px) {
+  /* Hide 2 images for clarity on mobile screens */
+   .animate-seventh-image, .animate-third-image, .animate-fourth-image {
+    display: none;
+  }
+  /* Scale down headline text for mobile */
+  .animate-why-path, .animate-cryocorp-path {
+    font-size: 3.5rem; /* adjust as needed for your design */
+  }
+  /* Reduce image sizes on mobile for less overlap */
+  .animate-sixth-image,
+  .animate-second-image,
+  .animate-single-image,
+  .animate-fifth-image
+   {
+    width: 4rem !important;
+    height: 4rem !important;
+  }
+
+  .animate-cryocorp-path {
+  position: absolute;
+  top: 35vh;
+  left: 5vw;             /* Moves text further inside the viewport */
+  max-width: 90vw;       /* Prevents text from overflowing horizontally */
+  animation: rectanglePath 6s linear infinite;
+  animation-delay: -3s;
+  transform-origin: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;   /* Keeps the text in a single line */
+  overflow: hidden;      /* Hides any overflow content */
+  text-overflow: ellipsis;
+}
+
+}
+

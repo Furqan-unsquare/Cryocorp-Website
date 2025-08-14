@@ -1,0 +1,1295 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CryoCorp O2 LLP: Plant Selection Assessment Tool</title>
+    <style>
+      :root {
+        --primary: #0056b3;
+        --secondary: #6c757d;
+        --success: #28a745;
+        --light: #f8f9fa;
+        --dark: #343a40;
+        --white: #ffffff;
+      }
+
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        line-height: 1.6;
+        color: #333;
+        margin: 0;
+        padding: 0;
+        background-color: #f5f7fa;
+      }
+
+      .container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+
+      header {
+        background: linear-gradient(135deg, #0056b3 0%, #00428a 100%);
+        color: white;
+        padding: 2rem;
+        text-align: center;
+        border-radius: 5px;
+        margin-bottom: 2rem;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      }
+
+      h1 {
+        margin: 0;
+        font-size: 2rem;
+        font-weight: 600;
+      }
+
+      .subtitle {
+        font-size: 1.1rem;
+        opacity: 0.9;
+        margin-top: 0.5rem;
+      }
+
+      .intro-box {
+        background-color: white;
+        border-left: 4px solid var(--primary);
+        padding: 1.5rem;
+        margin-bottom: 2rem;
+        border-radius: 5px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+      }
+
+      .why-take {
+        background-color: #e6f0ff;
+        padding: 1.5rem;
+        border-radius: 5px;
+        margin-bottom: 2rem;
+      }
+
+      .section {
+        background-color: white;
+        padding: 2rem;
+        border-radius: 5px;
+        margin-bottom: 1.5rem;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+      }
+
+      h2 {
+        color: var(--primary);
+        border-bottom: 2px solid #eee;
+        padding-bottom: 0.5rem;
+        margin-top: 0;
+      }
+
+      .question {
+        margin-bottom: 1.5rem;
+        padding-bottom: 1.5rem;
+        border-bottom: 1px dashed #ddd;
+      }
+
+      .question:last-child {
+        border-bottom: none;
+      }
+
+      .question h3 {
+        margin-top: 0;
+        color: var(--dark);
+      }
+
+      .options {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+
+      .option {
+        display: flex;
+        align-items: center;
+        padding: 0.75rem;
+        background-color: var(--light);
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.2s;
+      }
+
+      .option:hover {
+        background-color: #e9ecef;
+      }
+
+      .option.selected {
+        background-color: #cce5ff;
+        border-color: #b8daff;
+      }
+
+      .option input {
+        margin-right: 10px;
+      }
+
+      .other-input {
+        margin-top: 0.5rem;
+        display: none;
+      }
+
+      .other-input.visible {
+        display: block;
+      }
+
+      .other-input input {
+        width: calc(100% - 20px);
+        padding: 8px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+      }
+
+      .buttons {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 2rem;
+      }
+
+      .btn {
+        padding: 0.75rem 1.5rem;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-weight: 600;
+        transition: background-color 0.2s;
+      }
+
+      .btn-primary {
+        background-color: var(--primary);
+        color: white;
+      }
+
+      .btn-primary:hover {
+        background-color: #004494;
+      }
+
+      .btn-secondary {
+        background-color: var(--secondary);
+        color: white;
+      }
+
+      .btn-secondary:hover {
+        background-color: #5a6268;
+      }
+
+      .progress-container {
+        width: 100%;
+        background-color: #e9ecef;
+        border-radius: 4px;
+        margin-bottom: 2rem;
+        height: 8px;
+      }
+
+      .progress-bar {
+        height: 8px;
+        border-radius: 4px;
+        background-color: var(--primary);
+        width: 0%;
+        transition: width 0.3s ease;
+      }
+
+      .results {
+        background-color: #e6f7ff;
+        padding: 2rem;
+        border-radius: 5px;
+        border-left: 4px solid var(--primary);
+        margin-top: 2rem;
+        display: none;
+      }
+
+      .result-section {
+        margin-bottom: 1.5rem;
+      }
+
+      .result-section h3 {
+        color: var(--primary);
+        margin-bottom: 0.5rem;
+      }
+
+      .contact-info {
+        background-color: var(--light);
+        padding: 1.5rem;
+        border-radius: 5px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        margin-top: 2rem;
+      }
+
+      .contact-links {
+        text-align: left;
+      }
+
+      .contact-links a {
+        text-decoration: none;
+        color: black;
+      }
+
+      @media (max-width: 768px) {
+        header {
+          padding: 1.5rem;
+        }
+
+        .container {
+          padding: 15px;
+        }
+
+        .section {
+          padding: 1.5rem;
+        }
+
+        .buttons {
+          flex-direction: column;
+          gap: 1rem;
+        }
+
+        .btn {
+          width: 100%;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <h1>CryoCorp O2 LLP: Plant Selection Assessment Tool</h1>
+        <p class="subtitle">
+          Launch Successfully, Build Profitably, and Grow Strategically in the
+          Gas Industry
+        </p>
+      </header>
+
+      <div class="intro-box">
+        <p>
+          Take the first step by assessing your gas plant investment options
+          through our startup readiness quiz. Evaluate your business potential
+          and market opportunities in the industrial gas sector with our New
+          Entrant Gas Plant Selection Quiz.
+        </p>
+        <p>
+          This strategic assessment guides you through key decision factors and
+          reveals the optimal plant configuration for your specific business
+          goals and investment capacity.
+        </p>
+      </div>
+
+      <div class="why-take">
+        <h2>Why take the assessment?</h2>
+        <p>
+          Entering the gas industry with the right production facility is
+          critical for long-term success. Your initial plant selection will
+          shape your operational capabilities, market positioning, and return on
+          investment.
+        </p>
+        <p>
+          By methodically analyzing your target market, capital resources,
+          technical requirements, and growth objectives, you can identify the
+          most suitable gas plant technology, scale, and specialization—avoiding
+          costly missteps while establishing a strong foundation for your new
+          gas business venture.
+        </p>
+      </div>
+
+      <div class="progress-container">
+        <div class="progress-bar" id="progress"></div>
+      </div>
+
+      <form id="quiz-form">
+        <div class="quiz-container">
+          <!-- Question 1 -->
+          <div class="section question-section" id="question-1">
+            <div class="question">
+              <h3>1. Which gas are you primarily looking to produce?</h3>
+              <div class="options">
+                <label class="option">
+                  <input type="radio" name="gas-type" value="oxygen" /> Oxygen
+                </label>
+                <label class="option">
+                  <input type="radio" name="gas-type" value="nitrogen" />
+                  Nitrogen
+                </label>
+                <label class="option">
+                  <input type="radio" name="gas-type" value="both" /> Both
+                  oxygen and nitrogen
+                </label>
+                <label class="option">
+                  <input type="radio" name="gas-type" value="not-sure" /> Not
+                  sure yet
+                </label>
+              </div>
+            </div>
+            <div class="buttons">
+              <button
+                onclick="back()"
+                type="button"
+                class="btn btn-primary back-btn"
+              >
+                Back
+              </button>
+              <button type="button" class="btn btn-primary next-button">
+                Next
+              </button>
+            </div>
+          </div>
+
+          <!-- Question 2 -->
+          <div
+            class="section question-section"
+            id="question-2"
+            style="display: none"
+          >
+            <div class="question">
+              <h3>2. What purity level do you require for your gas?</h3>
+              <div class="options">
+                <label class="option">
+                  <input type="radio" name="purity" value="low" /> Low purity
+                  (90-95%)
+                </label>
+                <label class="option">
+                  <input type="radio" name="purity" value="medium" /> Medium
+                  purity (95-99%)
+                </label>
+                <label class="option">
+                  <input type="radio" name="purity" value="high" /> High purity
+                  (99-99.5%)
+                </label>
+                <label class="option">
+                  <input type="radio" name="purity" value="ultra-high" />
+                  Ultra-high purity (99.5%+)
+                </label>
+                <label class="option">
+                  <input type="radio" name="purity" value="not-sure" /> Not sure
+                  about my requirements
+                </label>
+              </div>
+            </div>
+            <div class="buttons">
+              <button type="button" class="btn btn-secondary prev-button">
+                Previous
+              </button>
+              <button type="button" class="btn btn-primary next-button">
+                Next
+              </button>
+            </div>
+          </div>
+
+          <!-- Question 3 -->
+          <div
+            class="section question-section"
+            id="question-3"
+            style="display: none"
+          >
+            <div class="question">
+              <h3>3. What is your required production capacity?</h3>
+              <div class="options">
+                <label class="option">
+                  <input type="radio" name="capacity" value="small" /> Small
+                  scale (1-10 m³/hour)
+                </label>
+                <label class="option">
+                  <input type="radio" name="capacity" value="medium" /> Medium
+                  scale (10-50 m³/hour)
+                </label>
+                <label class="option">
+                  <input type="radio" name="capacity" value="large" /> Large
+                  scale (50-200 m³/hour)
+                </label>
+                <label class="option">
+                  <input type="radio" name="capacity" value="industrial" />
+                  Industrial scale (200+ m³/hour)
+                </label>
+                <label class="option">
+                  <input
+                    type="radio"
+                    name="capacity"
+                    value="cylinders"
+                    id="cylinders-option"
+                  />
+                  I prefer to think in cylinders per day
+                </label>
+                <div class="other-input" id="cylinders-input">
+                  <input
+                    type="text"
+                    placeholder="Enter number of cylinders per day"
+                  />
+                </div>
+                <label class="option">
+                  <input type="radio" name="capacity" value="not-sure" /> Not
+                  sure about my capacity needs
+                </label>
+              </div>
+            </div>
+            <div class="buttons">
+              <button type="button" class="btn btn-secondary prev-button">
+                Previous
+              </button>
+              <button type="button" class="btn btn-primary next-button">
+                Next
+              </button>
+            </div>
+          </div>
+
+          <!-- Question 4 -->
+          <div
+            class="section question-section"
+            id="question-4"
+            style="display: none"
+          >
+            <div class="question">
+              <h3>
+                4. How do you plan to use the produced gas? (Select primary
+                industry/application)
+              </h3>
+              <div class="options">
+                <label class="option">
+                  <input type="radio" name="application" value="healthcare" />
+                  Healthcare/Medical
+                </label>
+                <label class="option">
+                  <input type="radio" name="application" value="metallurgy" />
+                  Metallurgy/Steel manufacturing
+                </label>
+                <label class="option">
+                  <input type="radio" name="application" value="chemical" />
+                  Chemical/Petrochemical processing
+                </label>
+                <label class="option">
+                  <input type="radio" name="application" value="electronics" />
+                  Electronics manufacturing
+                </label>
+                <label class="option">
+                  <input type="radio" name="application" value="food" /> Food &
+                  Beverage preservation
+                </label>
+                <label class="option">
+                  <input type="radio" name="application" value="aquaculture" />
+                  Aquaculture/Fish farming
+                </label>
+                <label class="option">
+                  <input type="radio" name="application" value="wastewater" />
+                  Wastewater treatment
+                </label>
+                <label class="option">
+                  <input type="radio" name="application" value="glass" /> Glass
+                  manufacturing
+                </label>
+                <label class="option">
+                  <input type="radio" name="application" value="welding" />
+                  Welding/Metal fabrication
+                </label>
+                <label class="option">
+                  <input type="radio" name="application" value="mining" />
+                  Mining operations
+                </label>
+                <label class="option">
+                  <input
+                    type="radio"
+                    name="application"
+                    value="other"
+                    id="other-app-option"
+                  />
+                  Other
+                </label>
+                <div class="other-input" id="other-app-input">
+                  <input type="text" placeholder="Please specify" />
+                </div>
+              </div>
+            </div>
+            <div class="buttons">
+              <button type="button" class="btn btn-secondary prev-button">
+                Previous
+              </button>
+              <button type="button" class="btn btn-primary next-button">
+                Next
+              </button>
+            </div>
+          </div>
+
+          <!-- Question 5 -->
+          <div
+            class="section question-section"
+            id="question-5"
+            style="display: none"
+          >
+            <div class="question">
+              <h3>
+                5. What is your timeline for plant installation and
+                commissioning?
+              </h3>
+              <div class="options">
+                <label class="option">
+                  <input type="radio" name="timeline" value="urgent" /> Urgent
+                  (within 1-2 months)
+                </label>
+                <label class="option">
+                  <input type="radio" name="timeline" value="short" />
+                  Short-term (3-6 months)
+                </label>
+                <label class="option">
+                  <input type="radio" name="timeline" value="medium" />
+                  Medium-term (6-12 months)
+                </label>
+                <label class="option">
+                  <input type="radio" name="timeline" value="long" /> Long-term
+                  (more than 12 months)
+                </label>
+                <label class="option">
+                  <input type="radio" name="timeline" value="flexible" />
+                  Flexible timeline
+                </label>
+              </div>
+            </div>
+            <div class="buttons">
+              <button type="button" class="btn btn-secondary prev-button">
+                Previous
+              </button>
+              <button type="button" class="btn btn-primary next-button">
+                Next
+              </button>
+            </div>
+          </div>
+
+          <!-- Question 6 -->
+          <div
+            class="section question-section"
+            id="question-6"
+            style="display: none"
+          >
+            <div class="question">
+              <h3>
+                6. What is your available space for the plant installation?
+              </h3>
+              <div class="options">
+                <label class="option">
+                  <input type="radio" name="space" value="very-limited" /> Very
+                  limited space (less than 50 m²)
+                </label>
+                <label class="option">
+                  <input type="radio" name="space" value="limited" /> Limited
+                  space (50-150 m²)
+                </label>
+                <label class="option">
+                  <input type="radio" name="space" value="moderate" /> Moderate
+                  space (150-500 m²)
+                </label>
+                <label class="option">
+                  <input type="radio" name="space" value="ample" /> Ample space
+                  (500+ m²)
+                </label>
+                <label class="option">
+                  <input type="radio" name="space" value="no-constraint" />
+                  Space is not a constraint
+                </label>
+              </div>
+            </div>
+            <div class="buttons">
+              <button type="button" class="btn btn-secondary prev-button">
+                Previous
+              </button>
+              <button type="button" class="btn btn-primary next-button">
+                Next
+              </button>
+            </div>
+          </div>
+
+          <!-- Question 7 -->
+          <div
+            class="section question-section"
+            id="question-7"
+            style="display: none"
+          >
+            <div class="question">
+              <h3>7. How would you describe your power supply situation?</h3>
+              <div class="options">
+                <label class="option">
+                  <input type="radio" name="power" value="limited" />
+                  Limited/Unreliable power supply
+                </label>
+                <label class="option">
+                  <input type="radio" name="power" value="standard" /> Standard
+                  commercial power supply
+                </label>
+                <label class="option">
+                  <input type="radio" name="power" value="industrial" />
+                  Industrial-grade power supply
+                </label>
+                <label class="option">
+                  <input type="radio" name="power" value="renewable" /> Access
+                  to renewable energy sources
+                </label>
+                <label class="option">
+                  <input type="radio" name="power" value="not-sure" /> Not sure
+                  about power requirements
+                </label>
+              </div>
+            </div>
+            <div class="buttons">
+              <button type="button" class="btn btn-secondary prev-button">
+                Previous
+              </button>
+              <button type="button" class="btn btn-primary next-button">
+                Next
+              </button>
+            </div>
+          </div>
+
+          <!-- Question 8 -->
+          <div
+            class="section question-section"
+            id="question-8"
+            style="display: none"
+          >
+            <div class="question">
+              <h3>
+                8. What is your budget range for this project? (in INR or USD)
+              </h3>
+              <div class="options">
+                <label class="option">
+                  <input type="radio" name="budget" value="low" /> Below ₹50
+                  lakhs / $60,000
+                </label>
+                <label class="option">
+                  <input type="radio" name="budget" value="medium" /> ₹50 lakhs
+                  to 2 crores / $60,000 to $240,000
+                </label>
+                <label class="option">
+                  <input type="radio" name="budget" value="high" /> ₹2 crores to
+                  10 crores / $240,000 to $1.2 million
+                </label>
+                <label class="option">
+                  <input type="radio" name="budget" value="very-high" /> Above
+                  ₹10 crores / $1.2 million
+                </label>
+                <label class="option">
+                  <input type="radio" name="budget" value="flexible" /> Budget
+                  is flexible depending on ROI
+                </label>
+                <label class="option">
+                  <input type="radio" name="budget" value="not-sure" /> Not sure
+                  / Still researching
+                </label>
+              </div>
+            </div>
+            <div class="buttons">
+              <button type="button" class="btn btn-secondary prev-button">
+                Previous
+              </button>
+              <button type="button" class="btn btn-primary next-button">
+                Next
+              </button>
+            </div>
+          </div>
+
+          <!-- Question 9 -->
+          <div
+            class="section question-section"
+            id="question-9"
+            style="display: none"
+          >
+            <div class="question">
+              <h3>9. What operational costs are you most concerned about?</h3>
+              <div class="options">
+                <label class="option">
+                  <input type="radio" name="costs" value="capital" /> Initial
+                  investment/capital expenditure
+                </label>
+                <label class="option">
+                  <input type="radio" name="costs" value="energy" />
+                  Energy/power consumption
+                </label>
+                <label class="option">
+                  <input type="radio" name="costs" value="maintenance" />
+                  Maintenance requirements
+                </label>
+                <label class="option">
+                  <input type="radio" name="costs" value="labor" />
+                  Labor/staffing requirements
+                </label>
+                <label class="option">
+                  <input type="radio" name="costs" value="all" /> All of the
+                  above
+                </label>
+                <label class="option">
+                  <input type="radio" name="costs" value="not-sure" /> Not sure
+                  about operational concerns
+                </label>
+              </div>
+            </div>
+            <div class="buttons">
+              <button type="button" class="btn btn-secondary prev-button">
+                Previous
+              </button>
+              <button type="button" class="btn btn-primary next-button">
+                Next
+              </button>
+            </div>
+          </div>
+
+          <!-- Question 10 (actually 11 in the original) -->
+          <div
+            class="section question-section"
+            id="question-10"
+            style="display: none"
+          >
+            <div class="question">
+              <h3>10. What additional features are important to you?</h3>
+              <div class="options">
+                <label class="option">
+                  <input type="checkbox" name="features" value="automation" />
+                  Automation and remote monitoring
+                </label>
+                <label class="option">
+                  <input
+                    type="checkbox"
+                    name="features"
+                    value="energy-efficiency"
+                  />
+                  Energy efficiency/low power consumption
+                </label>
+                <label class="option">
+                  <input type="checkbox" name="features" value="compact" />
+                  Compact design/small footprint
+                </label>
+                <label class="option">
+                  <input
+                    type="checkbox"
+                    name="features"
+                    value="low-maintenance"
+                  />
+                  Low maintenance requirements
+                </label>
+                <label class="option">
+                  <input type="checkbox" name="features" value="scalability" />
+                  Scalability for future expansion
+                </label>
+                <label class="option">
+                  <input
+                    type="checkbox"
+                    name="features"
+                    value="quick-installation"
+                  />
+                  Quick installation and commissioning
+                </label>
+                <label class="option">
+                  <input
+                    type="checkbox"
+                    name="features"
+                    value="other"
+                    id="other-features-option"
+                  />
+                  Other
+                </label>
+                <div class="other-input" id="other-features-input">
+                  <input type="text" placeholder="Please specify" />
+                </div>
+              </div>
+            </div>
+            <div class="buttons">
+              <button type="button" class="btn btn-secondary prev-button">
+                Previous
+              </button>
+              <button type="button" class="btn btn-primary next-button">
+                Next
+              </button>
+            </div>
+          </div>
+
+          <!-- Question 11 (actually 12 in the original) -->
+          <div
+            class="section question-section"
+            id="question-11"
+            style="display: none"
+          >
+            <div class="question">
+              <h3>
+                11. How would you describe your technical expertise or available
+                support?
+              </h3>
+              <div class="options">
+                <label class="option">
+                  <input type="radio" name="expertise" value="none" /> No
+                  technical expertise in-house
+                </label>
+                <label class="option">
+                  <input type="radio" name="expertise" value="basic" /> Basic
+                  technical knowledge available
+                </label>
+                <label class="option">
+                  <input type="radio" name="expertise" value="dedicated" />
+                  Dedicated technical team available
+                </label>
+                <label class="option">
+                  <input type="radio" name="expertise" value="turnkey" />
+                  Looking for turnkey solution with vendor support
+                </label>
+                <label class="option">
+                  <input type="radio" name="expertise" value="hire" /> Planning
+                  to hire specialists for this project
+                </label>
+              </div>
+            </div>
+            <div class="buttons">
+              <button type="button" class="btn btn-secondary prev-button">
+                Previous
+              </button>
+              <button type="button" class="btn btn-primary" id="submit-button">
+                Submit
+              </button>
+            </div>
+          </div>
+
+          <!-- Results Section -->
+          <div
+            class="section results"
+            id="results-section"
+            style="display: none"
+          >
+            <h2>Your Personalized Recommendation</h2>
+
+            <div class="result-section">
+              <h3>Optimal Technology Choice</h3>
+              <p id="technology-result"></p>
+            </div>
+
+            <div class="result-section">
+              <h3>Recommended Capacity and Configuration</h3>
+              <p id="capacity-result"></p>
+            </div>
+
+            <div class="result-section">
+              <h3>Estimated Budget Range</h3>
+              <p id="budget-result"></p>
+            </div>
+
+            <div class="result-section">
+              <h3>Key Benefits for Your Application</h3>
+              <p id="benefits-result"></p>
+            </div>
+
+            <div class="result-section">
+              <h3>Important Considerations</h3>
+              <p id="considerations-result"></p>
+            </div>
+
+            <div class="result-section">
+              <h3>Next Steps</h3>
+              <p id="next-steps-result"></p>
+            </div>
+
+            <div class="buttons">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                id="restart-button"
+              >
+                Start Over
+              </button>
+              <button type="button" class="btn btn-primary" id="contact-button">
+                Contact Us
+              </button>
+            </div>
+          </div>
+        </div>
+      </form>
+
+      <div class="contact-info">
+        <h3>Contact Information</h3>
+        <p>
+          For more information or to discuss your results with our technical
+          experts, please contact us at:
+        </p>
+        <div class="contact-links">
+          Contact us - <a href="https://calendly.com/admin-cryocorp/new-meeting" target="_blank">https://calendly.com/admin-cryocorp/new-meeting</a><br />
+          Email: <a href="mailto:admin@cryocorp.co.in"> admin@cryocorp.co.in</a><br />
+          Phone: +91 9004759939, +91 7738069949
+        </div>
+      </div>
+    </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        // Variables
+        const totalQuestions = 11;
+        let currentQuestion = 1;
+        const answers = {};
+
+        // Get DOM elements
+        const progressBar = document.getElementById("progress");
+        const submitButton = document.getElementById("submit-button");
+        const restartButton = document.getElementById("restart-button");
+        const contactButton = document.getElementById("contact-button");
+
+        // Update progress bar
+        function updateProgress() {
+          const progress = ((currentQuestion - 1) / totalQuestions) * 100;
+          progressBar.style.width = progress + "%";
+        }
+
+        // Show a specific question
+        function showQuestion(questionNumber) {
+          // Hide all questions
+          document.querySelectorAll(".question-section").forEach((section) => {
+            section.style.display = "none";
+          });
+
+          // Show the requested question
+          document.getElementById("question-" + questionNumber).style.display =
+            "block";
+
+          // Update current question and progress
+          currentQuestion = questionNumber;
+          updateProgress();
+        }
+
+        // Handle "Other" input fields visibility
+        function setupOtherInputs() {
+          // For cylinders per day
+          const cylindersOption = document.getElementById("cylinders-option");
+          const cylindersInput = document.getElementById("cylinders-input");
+
+          cylindersOption.addEventListener("change", function () {
+            if (this.checked) {
+              cylindersInput.style.display = "block";
+            } else {
+              cylindersInput.style.display = "none";
+            }
+          });
+
+          // For other application
+          const otherAppOption = document.getElementById("other-app-option");
+          const otherAppInput = document.getElementById("other-app-input");
+
+          otherAppOption.addEventListener("change", function () {
+            if (this.checked) {
+              otherAppInput.style.display = "block";
+            } else {
+              otherAppInput.style.display = "none";
+            }
+          });
+
+          // For other features
+          const otherFeaturesOption = document.getElementById(
+            "other-features-option"
+          );
+          const otherFeaturesInput = document.getElementById(
+            "other-features-input"
+          );
+
+          otherFeaturesOption.addEventListener("change", function () {
+            if (this.checked) {
+              otherFeaturesInput.style.display = "block";
+            } else {
+              otherFeaturesInput.style.display = "none";
+            }
+          });
+        }
+
+        // Next button click handler
+        document.querySelectorAll(".next-button").forEach((button) => {
+          button.addEventListener("click", function () {
+            // Go to the next question
+            showQuestion(currentQuestion + 1);
+          });
+        });
+
+        document.querySelectorAll(".back-btn").forEach((button) => {
+          button.addEventListener("click", function () {
+            // Go to the next question
+            window.location.href = "/quiz";
+          });
+        });
+
+        // Previous button click handler
+        document.querySelectorAll(".prev-button").forEach((button) => {
+          button.addEventListener("click", function () {
+            // Go to the previous question
+            showQuestion(currentQuestion - 1);
+          });
+        });
+
+        // Submit button click handler
+        submitButton.addEventListener("click", function () {
+          // Collect all answers
+          collectAnswers();
+
+          // Generate results
+          generateResults();
+
+          // Hide all questions
+          document.querySelectorAll(".question-section").forEach((section) => {
+            section.style.display = "none";
+          });
+
+          // Show results
+          document.getElementById("results-section").style.display = "block";
+
+          // Update progress to 100%
+          progressBar.style.width = "100%";
+        });
+
+        // Restart button click handler
+        restartButton.addEventListener("click", function () {
+          // Reset the form
+          document.getElementById("quiz-form").reset();
+
+          // Hide results
+          document.getElementById("results-section").style.display = "none";
+
+          // Show first question
+          showQuestion(1);
+        });
+
+        // Contact button click handler
+        contactButton.addEventListener("click", function () {
+          window.location.href = "https://calendly.com/admin-cryocorp/new-meeting"
+        });
+
+        // Highlight selected options
+        document.querySelectorAll(".option").forEach((option) => {
+          option.addEventListener("click", function () {
+            const input = this.querySelector("input");
+
+            // For radio buttons, clear all selected in the same group
+            if (input.type === "radio") {
+              const name = input.getAttribute("name");
+              document
+                .querySelectorAll(`input[name="${name}"]`)
+                .forEach((radio) => {
+                  radio.closest(".option").classList.remove("selected");
+                });
+            }
+
+            // Toggle selected class
+            if (input.type === "checkbox") {
+              this.classList.toggle("selected", input.checked);
+            } else {
+              this.classList.add("selected");
+            }
+          });
+        });
+
+        // Collect all answers from the form
+        function collectAnswers() {
+          answers.gasType =
+            document.querySelector('input[name="gas-type"]:checked')?.value ||
+            "";
+          answers.purity =
+            document.querySelector('input[name="purity"]:checked')?.value || "";
+          answers.capacity =
+            document.querySelector('input[name="capacity"]:checked')?.value ||
+            "";
+          if (answers.capacity === "cylinders") {
+            answers.cylindersPerDay = document.querySelector(
+              "#cylinders-input input"
+            ).value;
+          }
+          answers.application =
+            document.querySelector('input[name="application"]:checked')
+              ?.value || "";
+          if (answers.application === "other") {
+            answers.otherApplication = document.querySelector(
+              "#other-app-input input"
+            ).value;
+          }
+          answers.timeline =
+            document.querySelector('input[name="timeline"]:checked')?.value ||
+            "";
+          answers.space =
+            document.querySelector('input[name="space"]:checked')?.value || "";
+          answers.power =
+            document.querySelector('input[name="power"]:checked')?.value || "";
+          answers.budget =
+            document.querySelector('input[name="budget"]:checked')?.value || "";
+          answers.costs =
+            document.querySelector('input[name="costs"]:checked')?.value || "";
+
+          // Collect all checked features
+          answers.features = [];
+          document
+            .querySelectorAll('input[name="features"]:checked')
+            .forEach((feature) => {
+              answers.features.push(feature.value);
+            });
+          if (answers.features.includes("other")) {
+            answers.otherFeatures = document.querySelector(
+              "#other-features-input input"
+            ).value;
+          }
+
+          answers.expertise =
+            document.querySelector('input[name="expertise"]:checked')?.value ||
+            "";
+        }
+
+        // Generate results based on answers
+        function generateResults() {
+          // Determine technology based on gas type and purity
+          let technology = "";
+          if (answers.gasType === "oxygen" || answers.gasType === "both") {
+            if (answers.purity === "low" || answers.purity === "medium") {
+              technology = "Pressure Swing Adsorption (PSA) Technology";
+            } else if (
+              answers.purity === "high" ||
+              answers.purity === "ultra-high"
+            ) {
+              technology = "Air Separation Unit (ASU) - Cryogenic Technology";
+            } else {
+              technology =
+                "A combination of PSA and ASU technologies, depending on detailed requirements";
+            }
+          } else if (answers.gasType === "nitrogen") {
+            if (answers.purity === "low" || answers.purity === "medium") {
+              technology = "Membrane Technology or PSA System";
+            } else {
+              technology = "Air Separation Unit (ASU) - Cryogenic Technology";
+            }
+          } else {
+            technology =
+              "We recommend a consultation with our technical team to determine the most suitable technology based on your specific needs.";
+          }
+
+          // Determine capacity and configuration
+          let capacity = "";
+          if (answers.capacity === "small") {
+            capacity =
+              "A small-scale PSA or membrane system with production capacity of 1-10 m³/hour, modular design for easy installation and operation.";
+          } else if (answers.capacity === "medium") {
+            capacity =
+              "A medium-scale system with production capacity of 10-50 m³/hour, skid-mounted for simplified installation and startup.";
+          } else if (answers.capacity === "large") {
+            capacity =
+              "A large-scale system with production capacity of 50-200 m³/hour, with potential for liquid storage options.";
+          } else if (answers.capacity === "industrial") {
+            capacity =
+              "An industrial-scale ASU with production capacity of 200+ m³/hour, with liquid storage and potential for cylinder filling station.";
+          } else if (answers.capacity === "cylinders") {
+            const cylindersPerDay = parseInt(answers.cylindersPerDay || "0");
+            if (cylindersPerDay < 50) {
+              capacity =
+                "A small-scale system with integrated cylinder filling capabilities.";
+            } else if (cylindersPerDay < 200) {
+              capacity =
+                "A medium-scale system with dedicated cylinder filling station.";
+            } else {
+              capacity =
+                "A large-scale system with multiple filling stations and storage capabilities.";
+            }
+          } else {
+            capacity =
+              "We recommend a detailed capacity analysis based on your peak and average consumption patterns.";
+          }
+
+          // Determine budget range
+          let budget = "";
+          if (answers.budget === "low") {
+            budget =
+              "For your budget range (Below ₹50 lakhs / $60,000), we recommend a small-scale PSA or membrane system with basic features. Lease options may also be available.";
+          } else if (answers.budget === "medium") {
+            budget =
+              "Your budget range (₹50 lakhs to 2 crores / $60,000 to $240,000) allows for a medium-scale system with automation features and higher efficiency.";
+          } else if (answers.budget === "high") {
+            budget =
+              "With your budget range (₹2 crores to 10 crores / $240,000 to $1.2 million), a comprehensive system with advanced features, storage, and distribution solutions is feasible.";
+          } else if (answers.budget === "very-high") {
+            budget =
+              "Your budget range (Above ₹10 crores / $1.2 million) enables a fully customized industrial-scale solution with highest purity levels and complete automation.";
+          } else {
+            budget =
+              "Based on your other requirements, we estimate a budget range of ₹1-3 crores / $120,000-$360,000 for a solution that meets your needs with a reasonable ROI period.";
+          }
+
+          // Determine benefits based on application
+          let benefits = "";
+          if (answers.application === "healthcare") {
+            benefits =
+              "For healthcare applications, our solution provides medical-grade gas purity, compliance with regulatory standards, reliable supply, and reduced dependency on external vendors.";
+          } else if (answers.application === "metallurgy") {
+            benefits =
+              "For metallurgy applications, our system delivers consistent gas quality for optimal process results, reduced operational costs compared to cylinder supply, and scalability to meet varying production demands.";
+          } else if (answers.application === "chemical") {
+            benefits =
+              "For chemical processing, our solution ensures high purity levels required for reaction efficiency, reliable continuous supply, and complete system integration with your existing processes.";
+          } else if (answers.application === "food") {
+            benefits =
+              "For food & beverage applications, our system provides food-grade gas quality, compliance with food safety standards, and consistent supply for packaging and preservation needs.";
+          } else {
+            benefits =
+              "Key benefits include supply security, elimination of delivery logistics, long-term cost savings, precise purity control, and improved process efficiency tailored to your industry requirements.";
+          }
+
+          // Determine considerations based on various factors
+          const considerations = [];
+
+          if (answers.space === "very-limited" || answers.space === "limited") {
+            considerations.push(
+              "Space optimization will be a key consideration in plant design"
+            );
+          }
+
+          if (answers.power === "limited") {
+            considerations.push(
+              "Energy efficiency and backup power solutions will be essential"
+            );
+          }
+
+          if (answers.timeline === "urgent" || answers.timeline === "short") {
+            considerations.push(
+              "Fast-track implementation and phased commissioning approach recommended"
+            );
+          }
+
+          if (answers.expertise === "none" || answers.expertise === "basic") {
+            considerations.push(
+              "Comprehensive training program and extended technical support package recommended"
+            );
+          }
+
+          if (answers.costs === "energy") {
+            considerations.push(
+              "Energy recovery systems and efficiency optimizations to reduce operational costs"
+            );
+          }
+
+          if (considerations.length === 0) {
+            considerations.push(
+              "Standard installation and commissioning procedures with regular maintenance program"
+            );
+            considerations.push(
+              "ROI analysis and optimization recommendations for your specific operation"
+            );
+          }
+
+          // Next steps
+          const nextSteps = [
+            "Schedule a detailed technical consultation with our engineering team",
+            "Site assessment and utility requirement analysis",
+            "Detailed proposal with plant specifications and ROI analysis",
+            "Technical presentation and demonstration of similar installations",
+            "Contract finalization and project initiation",
+          ];
+          // Display results
+          document.getElementById("technology-result").textContent = technology;
+          document.getElementById("capacity-result").textContent = capacity;
+          document.getElementById("budget-result").textContent = budget;
+          document.getElementById("benefits-result").textContent = benefits;
+          document.getElementById("considerations-result").textContent =
+            considerations.join(". ") + ".";
+          document.getElementById("next-steps-result").textContent =
+            nextSteps.join(". ") + ".";
+        }
+
+        // Setup "Other" input fields
+        setupOtherInputs();
+
+        // Show the first question and initialize progress
+        showQuestion(1);
+        updateProgress();
+      });
+    </script>
+  </body>
+</html>
