@@ -48,77 +48,50 @@ const BlogDetailPage = () => {
 
   const readingTime = Math.ceil(blog.content.split(' ').length / 200);
 
-const handleShare = async () => {
-  const url = window.location.href;
-  const shareText = `📖 View our blog: ${blog.title}\n\nRead here:`;
+  const handleShare = async () => {
+    const url = window.location.href;
+    const shareText = `📖 View our blog: ${blog.title}\n\nRead here:`;
 
-  try {
-    if (navigator.share) {
-      await navigator.share({
-        title: blog.title,
-        text: shareText,
-        url,
-      });
-    } else {
-      await navigator.clipboard.writeText(`${shareText} ${url}`);
+    try {
+      if (navigator.share) {
+        await navigator.share({
+          title: blog.title,
+          text: shareText,
+          url,
+        });
+      } else {
+        await navigator.clipboard.writeText(`${shareText} ${url}`);
+        toast({
+          title: 'Link copied',
+          description: 'Article link has been copied to clipboard.',
+        });
+      }
+    } catch {
       toast({
-        title: 'Link copied',
-        description: 'Article link has been copied to clipboard.',
+        title: 'Error',
+        description: 'Failed to share or copy the link.',
+        variant: 'destructive',
       });
     }
-  } catch {
-    toast({
-      title: 'Error',
-      description: 'Failed to share or copy the link.',
-      variant: 'destructive',
-    });
-  }
-};
+  };
 
-
-  const renderContent = (content: string) => {
-    return content
-      .split('\n\n')
-      .map((paragraph, index) => {
-        if (paragraph.startsWith('# ')) {
-          return (
-            <h1 key={index} className="text-3xl font-bold text-gray-900 mb-6 mt-8">
-              {paragraph.replace('# ', '')}
-            </h1>
-          );
-        }
-        if (paragraph.startsWith('## ')) {
-          return (
-            <h2 key={index} className="text-2xl font-semibold text-gray-900 mb-4 mt-8">
-              {paragraph.replace('## ', '')}
-            </h2>
-          );
-        }
-        if (paragraph.startsWith('### ')) {
-          return (
-            <h3 key={index} className="text-xl font-medium text-gray-900 mb-3 mt-6">
-              {paragraph.replace('### ', '')}
-            </h3>
-          );
-        }
-        if (paragraph.startsWith('```') && paragraph.endsWith('```')) {
-          const code = paragraph.slice(3, -3);
-          return (
-            <pre key={index} className="bg-gray-100 p-4 rounded-lg overflow-x-auto mb-6">
-              <code className="text-sm">{code}</code>
-            </pre>
-          );
-        }
-
-        let formattedParagraph = paragraph
-          .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-          .replace(/\*(.*?)\*/g, '<em>$1</em>')
-          .replace(/`([^`]*)`/g, '<code class="bg-gray-100 px-1 rounded text-sm">$1</code>');
-
-        return (
-          <p key={index} className="text-gray-700 leading-relaxed mb-6" dangerouslySetInnerHTML={{ __html: formattedParagraph }} />
-        );
-      });
+  // Updated function to handle HTML content with mobile-responsive links
+  const processHtmlContent = (html: string) => {
+    // Add responsive classes to links and handle word wrapping
+    return html
+      .replace(
+        /<a([^>]*)>/g, 
+        '<a$1 class="text-blue-600 hover:text-blue-800 underline break-all md:break-normal">'
+      )
+      .replace(
+        /<u><em[^>]*>([^<]*)<\/em><\/u>/g,
+        '<a href="$1" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:text-blue-800 underline break-all md:break-normal">$1</a>'
+      )
+      // Handle standalone URLs that might not be wrapped in anchor tags
+      .replace(
+        /https?:\/\/[^\s<>"{}|\\^`[\]]+/g,
+        '<a href="$&" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:text-blue-800 underline break-all md:break-normal">$&</a>'
+      );
   };
 
   return (
@@ -143,6 +116,10 @@ const handleShare = async () => {
                 day: 'numeric',
               })}
             </div>
+            <div className="flex items-center">
+              <Clock className="h-4 w-4 mr-1" />
+              {readingTime} min read
+            </div>
             <Button variant="ghost" size="sm" onClick={handleShare}>
               <Share2 className="h-4 w-4 mr-1" />
               Share
@@ -162,12 +139,21 @@ const handleShare = async () => {
 
         {blog.coverImage && (
           <div className="mb-8">
-            <img src={blog.coverImage} alt={blog.title} className="w-full h-64 md:h-96 object-cover rounded-lg shadow-lg" />
+            <img 
+              src={blog.coverImage} 
+              alt={blog.title} 
+              className="w-full h-64 md:h-96 object-cover rounded-lg shadow-lg" 
+            />
           </div>
         )}
 
         <article className="prose prose-lg max-w-none">
-          {renderContent(blog.content)}
+          <div 
+            className="blog-content break-words"
+            dangerouslySetInnerHTML={{ 
+              __html: processHtmlContent(blog.content) 
+            }}
+          />
         </article>
       </div>
     </div>
